@@ -1,4 +1,4 @@
 RPentaho
 ========
 
-R Connector for Pentaho via CTools https://github.com/webdetails
+R Connector for Pentaho via CTools CDA and CDB interface - https://github.com/webdetails
