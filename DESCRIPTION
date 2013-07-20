@@ -1,0 +1,16 @@
+Package: RPentaho
+Version: 0.1
+Date: 2013-07-14
+Author: Piers Harding <piers@ompka.net>
+Maintainer: Piers Harding <piers@ompka.net>
+Title: RPentaho Pentaho CDA Webservice client interface for R
+Description: Pentaho CDA Webservice Client interface for R
+SystemRequirements: RJSON
+Depends: R (>= 2.12.0), methods, utils, yaml, rjson
+LazyLoad: yes
+License: GPL-3
+URL: http://github.com/piersharding/RPentaho
+BugReports: http://github.com/piersharding/RPentaho/issues
+BuildVignettes: no
+Repository: CRAN
+Date/Publication: 2013-07-14 12:00:00

@@ -1,0 +1,20 @@
+
+import(methods)
+
+importFrom(stats, runif)
+
+export(
+       RPentaho,
+       info,
+       cdaquery,
+       cdbquery,
+       cdbgroups
+)
+
+exportClasses(
+              RPentahoConnector
+)
+
+S3method(info, "RPentahoConnector")
+S3method(print, "RPentahoConnector")
+

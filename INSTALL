@@ -1,0 +1,46 @@
+HowTo install RPentaho
+=========================
+
+The easiest way to install RPentaho is to clone the repository and use
+R CMD INSTALL
+
+First Option:
+
+From my own repository - in R:
+
+install.packages('RPentaho', repos=c('http://piersharding.com/R'))
+
+
+Second Option:
+
+Using devtools, you can directly install the package from GitHub.
+From R:
+
+install.packages('devtools')
+library(devtools)
+install_github('RPentaho', username='piersharding')
+
+You must ensure that all your installed packages (especially httr, and stringr) are
+up to date.  The easiest way to do this is to start R and:
+
+update.packages()
+
+
+Third Option:
+
+Download the package from GitHub -
+either:
+git clone git@github.com:piersharding/RPentaho.git
+
+or:
+retrieve and unpack https://github.com/piersharding/RPentaho/archive/master.zip
+
+Then run the build and install command from the package root
+directory:
+
+autoconf
+R CMD INSTALL --build --preclean --clean .
+
+This has been tested under Ubuntu 13.04 - how it builds on
+other platforms is unknown.
+

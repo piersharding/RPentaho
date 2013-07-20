@@ -1,0 +1,4 @@
+pentaho: http://localhost:8080/pentaho/
+userid: joe
+password: password
+loglevel: debug

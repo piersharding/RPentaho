@@ -1,5 +1,15 @@
 # History files
 .Rhistory
-
 # Example code in package build process
-*-Ex.R
+.RData
+.Rbuildignore
+.Rinstignore
+*-Ex.R.RData
+.Rhistory
+RPentaho*.tar.gz
+rfc*.trc
+*.Rout
+tst.sh
+test.R
+cleanup
+*.sh
