@@ -1,4 +1,6 @@
+install.packages('yaml', 'RJSONIO', 'RCurl')
+
 install.packages(
-    c("yaml", "RUnit", "rjson"),
+    c("RPentaho"),
     repos = c("http://piersharding.com/R"),
 )

@@ -22,7 +22,8 @@
 {
     if(is.null(getOption("dec")))
         options(dec = Sys.localeconv()["decimal_point"])
-    library("rjson")
+    library("RJSONIO")
+    library("RCurl")
 }
 
 RPentaho <- function (...)
@@ -99,9 +100,10 @@ call_pentaho <- function(cda_url, withFactors=FALSE,toNumeric=TRUE, toDate=TRUE)
             # http://localhost:8080/pentaho/content/cdb/query?method=listGroups&userid=joe&password=password
             # http://localhost:8080/pentaho/content/cdb/query?method=loadGroup&group=group1&userid=joe&password=password
 
-            # print(paste("CDA URL: ", cda_url))
+            #print(paste("CDA URL: ", cda_url))
 
-            json_data <- fromJSON(paste(readLines(URLencode(cda_url), warn=FALSE), collapse=""));
+            #json_data <- fromJSON(paste(readLines(URLencode(cda_url), warn=FALSE), collapse=""));
+            json_data <- fromJSON(paste(getURLContent(URLencode(cda_url)), collapse=""), nullValue=NA);
             # Get types
             ct <- sapply(json_data$metadata,function(d){d$colType})
             cn <- sapply(json_data$metadata,function(d){d$colName});
@@ -179,14 +181,15 @@ setMethod("cdbgroups", "RPentahoConnector",
             cda_url <- paste(c(pentaho@pentaho,"/content/cdb/query?method=listGroups&userid=",
                                    pentaho@userid,"&password=",pentaho@password), collapse = "");
 
-            json_data <- fromJSON(paste(readLines(URLencode(cda_url), warn=FALSE), collapse=""));
+            #json_data <- fromJSON(paste(readLines(URLencode(cda_url), warn=FALSE), collapse=""));
+            json_data <- fromJSON(paste(getURLContent(URLencode(cda_url)), collapse=""), nullValue=NA);
             gnames <- sapply(json_data$object,function(d){d$name})
             groups <- data.frame()
             # http://localhost:8080/pentaho/content/cdb/query?method=loadGroup&group=group1&userid=joe&password=password
             for (d in gnames) {
                 cda_url <- paste(c(pentaho@pentaho,"/content/cdb/query?method=loadGroup&group=", d, "&userid=",
                                    pentaho@userid,"&password=",pentaho@password), collapse = "");
-                json_data <- fromJSON(paste(readLines(URLencode(cda_url), warn=FALSE), collapse=""));
+                json_data <- fromJSON(paste(readLines(URLencode(cda_url), warn=FALSE), collapse=""), nullValue=NA);
                 groups <- rbind(groups,
                      data.frame(group=sapply(json_data$object, function (d) {d$group}),
                           groupName=sapply(json_data$object, function (d) {d$groupName}),

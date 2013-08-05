@@ -1,5 +1,5 @@
 
-RPentaho - An R interface to the Pentaho CDA Webservice 
+RPentaho - An R interface to the Pentaho CDA Webservice
 ----------------------------------------------------------
 
 Copyright (C) Piers Harding 2013 - and beyond, All rights reserved
@@ -10,8 +10,8 @@ Welcome to the RPentaho R module.  This module is intended to facilitate CDA and
 
 
 Prerequisites:
-Please insure that YAML is installed:
-install.packages('yaml')
+Please insure that YAML, RCurl, and RJSONIO are installed:
+install.packages('yaml', 'RJSONIO', 'RCurl')
 
 Installation:
 install.packages('RPentaho', repos=c('http://piersharding.com/R'))
