@@ -103,7 +103,7 @@ call_pentaho <- function(cda_url, withFactors=FALSE,toNumeric=TRUE, toDate=TRUE)
             #print(paste("CDA URL: ", cda_url))
 
             #json_data <- fromJSON(paste(readLines(URLencode(cda_url), warn=FALSE), collapse=""));
-            json_data <- fromJSON(paste(getURLContent(URLencode(cda_url)), collapse=""), nullValue=NA);
+            json_data <- fromJSON(paste(getURLContent(URLencode(cda_url), ssl.verifypeer = FALSE), collapse=""), nullValue=NA);
             # Get types
             ct <- sapply(json_data$metadata,function(d){d$colType})
             cn <- sapply(json_data$metadata,function(d){d$colName});
@@ -182,7 +182,7 @@ setMethod("cdbgroups", "RPentahoConnector",
                                    pentaho@userid,"&password=",pentaho@password), collapse = "");
 
             #json_data <- fromJSON(paste(readLines(URLencode(cda_url), warn=FALSE), collapse=""));
-            json_data <- fromJSON(paste(getURLContent(URLencode(cda_url)), collapse=""), nullValue=NA);
+            json_data <- fromJSON(paste(getURLContent(URLencode(cda_url), ssl.verifypeer = FALSE), collapse=""), nullValue=NA);
             gnames <- sapply(json_data$object,function(d){d$name})
             groups <- data.frame()
             # http://localhost:8080/pentaho/content/cdb/query?method=loadGroup&group=group1&userid=joe&password=password
