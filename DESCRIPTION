@@ -5,7 +5,7 @@ Author: Piers Harding <piers@ompka.net>
 Maintainer: Piers Harding <piers@ompka.net>
 Title: RPentaho Pentaho CDA Webservice client interface for R
 Description: Pentaho CDA Webservice Client interface for R
-SystemRequirements: RJSON
+SystemRequirements: RJSONIO
 Depends: R (>= 2.12.0), methods, utils, yaml, RJSONIO, RCurl
 LazyLoad: yes
 License: GPL-3
