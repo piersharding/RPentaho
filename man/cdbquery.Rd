@@ -5,13 +5,14 @@
   Query Pentaho via the cdb web service interface.  CDB is the Community Data Browser - \url{http://www.webdetails.pt/ctools/cdb.html}.  This enables users to build and bookmark data queries for later use.  The cdb web service provides a JSON based result payload that converts easily to R structures.  In this case all resultsets are given back to the user as a data.frame.
 }
 \usage{
-cdbquery(pentaho, group, query, withFactors=FALSE,toNumeric=TRUE, toDate=TRUE, ...)
+cdbquery(pentaho, group, query, userid=FALSE, withFactors=FALSE,toNumeric=TRUE, toDate=TRUE, ...)
 
 }%"
 \arguments{
   \item{pentaho}{Pentaho connection object}
   \item{group}{CDB group name}
   \item{query}{CDB query name}
+  \item{userid}{Overide the default userid if the group belongs to someoneother than the user credentials - default FALSE}
   \item{withFactors}{Convert character vectors to Factors - default FALSE}
   \item{toNumeric}{Convert numeric vector types to Numeric - default TRUE}
   \item{toDate}{Attempt to convert Date labelled vectors to POSIXct date types - default TRUE}

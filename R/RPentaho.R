@@ -103,7 +103,11 @@ call_pentaho <- function(cda_url, withFactors=FALSE,toNumeric=TRUE, toDate=TRUE)
             #print(paste("CDA URL: ", cda_url))
 
             #json_data <- fromJSON(paste(readLines(URLencode(cda_url), warn=FALSE), collapse=""));
-            json_data <- fromJSON(paste(getURLContent(URLencode(cda_url), ssl.verifypeer = FALSE), collapse=""), nullValue=NA);
+            json_data <- paste(getURLContent(URLencode(cda_url), ssl.verifypeer = FALSE), collapse="");
+            if (nchar(json_data) == 0) {
+                return(data.frame())
+            }
+            json_data <- fromJSON(json_data, nullValue=NA);
             # Get types
             ct <- sapply(json_data$metadata,function(d){d$colType})
             cn <- sapply(json_data$metadata,function(d){d$colName});
@@ -205,10 +209,10 @@ setMethod("cdbgroups", "RPentahoConnector",
 
 #http://localhost:8080/pentaho/content/cdb/query?method=loadGroup&group=group1&userid=joe&password=password
 #http://localhost:8080/pentaho//content/cdb/query?method=loadGroup&group=joe.group1&userid=joe&password=password
-setGeneric("cdbquery", function(pentaho, group, query, withFactors=FALSE,toNumeric=TRUE, toDate=TRUE, ...) standardGeneric("cdbquery"));
+setGeneric("cdbquery", function(pentaho, group, query, userid=FALSE, withFactors=FALSE,toNumeric=TRUE, toDate=TRUE, ...) standardGeneric("cdbquery"));
 
 setMethod("cdbquery", "RPentahoConnector",
-        def = function(pentaho, group, query, withFactors=FALSE,toNumeric=TRUE, toDate=TRUE, ...){
+        def = function(pentaho, group, query, userid=FALSE, withFactors=FALSE,toNumeric=TRUE, toDate=TRUE, ...){
             # http://localhost:8080/pentaho//content/cdb/doQuery?group=joe.group1&outputType=json&id=qry1&userid=joe&password=password
 
             # process parameters
@@ -216,10 +220,13 @@ setMethod("cdbquery", "RPentahoConnector",
             extra <- mapply(function(key,value) { paste(key, value, sep="=") }, key=names(extra), value=extra)
 
             # groups are scoped by userid
-            group <- paste(pentaho@userid, group, sep='.')
+            if (userid == FALSE) {
+                userid <- pentaho@userid
+            }
+            group <- paste(userid, group, sep='.')
             cda_url <- paste(c(pentaho@pentaho,"/content/cdb/doQuery?group=",
                                    group,"&outputType=json&id=",
-                                   query,"&userid=",pentaho@userid,"&password=",pentaho@password), collapse = "");
+                                   query,"&userid=", pentaho@userid,"&password=",pentaho@password), collapse = "");
             if (length(extra) > 0) {
                 cda_url <- paste(c(cda_url, extra), collapse="&")
             }
