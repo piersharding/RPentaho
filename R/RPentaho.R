@@ -14,10 +14,12 @@
 #  A copy of the GNU General Public License is available at
 #  http://www.r-project.org/Licenses/
 #
-#  Function library of mapi integration for MonetDB
+#  Function library of R integration with Pentaho
 #
 #
 #
+
+# load dependent libraries for HTTP via Curl and JSON decoding
 .onLoad <- function(libname, pkgname)
 {
     if(is.null(getOption("dec")))
@@ -26,6 +28,7 @@
     library("RCurl")
 }
 
+# Constructor
 RPentaho <- function (...)
 {
     args <- list(...)
@@ -38,21 +41,24 @@ RPentaho <- function (...)
 
     # did we get passed a config file?
     if (typeof(args[[1]]) == "character" && file.exists(args[[1]])) {
+        # parse config file and go around again with parameters
         library(yaml)
         config <- yaml.load_file(args[[1]])
         newargs <- list()
         for (x in names(config)) { newargs[[x]] <- as.character(config[[x]]); }
         return(RPentaho(newargs))
     }
-    # format dbport
+    # ensure we have the parameters we need 
     if (!exists("pentaho", where=args) || !exists("userid", where=args) || !exists("password", where=args)) {
         stop("must call with 'pentaho', 'userid', and 'password'")
     }
 
+    # Create connector object and hand back
     res <- RPentahoConnector(pentaho=args$pentaho, userid=args$userid, password=args$password)
     return(res)
 }
 
+# when connector is printed give back connection info
 print.RPentahoConnector <- function(x, ...) {
     cat("\n")
     print(as.data.frame(info(x)))
@@ -63,6 +69,7 @@ info.RPentahoConnector <- function(x, ...) {
     return(list(pentaho=x@pentaho, userid=x@userid, password='*****'))
 }
 
+# define connector class
 setClass("RPentahoConnector",
     representation=representation(
         pentaho="character",
@@ -74,13 +81,13 @@ setClass("RPentahoConnector",
         else TRUE
     })
 
-
+# connector object constructor function
 RPentahoConnector <- function(pentaho=character(), userid=character(), password=character(), ...) {
     return(new("RPentahoConnector", pentaho=pentaho, userid=userid, password=password, ...))
 }
 
 
-
+# utility for HTTP and JSON handling
 call_pentaho <- function(cda_url, withFactors=FALSE,toNumeric=TRUE, toDate=TRUE){
 
             # Utility functions
@@ -140,30 +147,9 @@ setGeneric("cdaquery", function(pentaho, file, id, solution="", path="", withFac
 setMethod("cdaquery", "RPentahoConnector",
         def = function(pentaho, file, id, solution="", path="", withFactors=FALSE,toNumeric=TRUE, toDate=TRUE, ...){
             # http://localhost:8080/pentaho/content/cda/doQuery?solution=oua&path=&file=cde2.cda&dataAccessId=MDX1
-#             http://localhost:8080/pentaho/content/cda/doQuery?solution=plugin-samples&path=%2Fcda%2Fcdafiles&file=metadata.cda&dataAccessId=1&paramstatus=Shipped
-
             # process parameters
             extra <- list(...)
             extra <- mapply(function(key,value) { paste(paste('param', key, sep=""), value, sep="=") }, key=names(extra), value=extra)
-
-# http://localhost:8080/pentaho/content/cda/doQuery?solution=plugin-samples&path=%2Fcda%2Fcdafiles&file=kettle.cda&dataAccessId=1&parammyRadius=30&paramZipCode=32771
-
-# http://localhost:8080/pentaho/content/cda/doQuery?solution=plugin-samples&path=%2Fcda%2Fcdafiles&file=mondrian-jdbc.cda&dataAccessId=1&paramstatus=Shipped
-
-# http://localhost:8080/pentaho/content/cda/doQuery?solution=plugin-samples&path=%2Fcda%2Fcdafiles&file=mondrian-jndi.cda&dataAccessId=1&paramstatus=Shipped
-
-# http://localhost:8080/pentaho/content/cda/doQuery?solution=plugin-samples&path=%2Fcda%2Fcdafiles&file=olap4j.cda&dataAccessId=1&paramstatus=In+Process
-
-
-# http://localhost:8080/pentaho/content/cda/doQuery?solution=plugin-samples&path=%2Fcda%2Fcdafiles&file=compoundJoin.cda&dataAccessId=2&paramstatus=Shipped&paramorderDate=2003-03-01
-
-# http://localhost:8080/pentaho/content/cda/doQuery?solution=plugin-samples&path=%2Fcda%2Fcdafiles&file=compoundUnion.cda&dataAccessId=2&paramorderDate=2003-03-01
-
-
-# http://localhost:8080/pentaho/content/cda/doQuery?solution=plugin-samples&path=%2Fcda%2Fcdafiles&file=scripting.cda&dataAccessId=1&paramstatus=In+Process
-
-
-# http://localhost:8080/pentaho/content/cda/doQuery?solution=plugin-samples&path=%2Fcda%2Fcdafiles&file=sample-iterable-sql.cda&dataAccessId=4
 
             cda_url <-paste(pentaho@pentaho, '/content/cda/doQuery?solution=', solution, '&path=', path, '&file=', file, '&dataAccessId=', id, '&userid=', pentaho@userid, '&password=', pentaho@password, sep="")
             if (length(extra) > 0) {
