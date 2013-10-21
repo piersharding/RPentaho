@@ -17,4 +17,5 @@ exportClasses(
 
 S3method(info, "RPentahoConnector")
 S3method(print, "RPentahoConnector")
+S3method(str, "RPentahoConnector")
 

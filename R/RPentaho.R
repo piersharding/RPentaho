@@ -59,6 +59,11 @@ RPentaho <- function (...)
 }
 
 # when connector is printed give back connection info
+str.RPentahoConnector <- function(x, ...) {
+    print(x)
+}
+
+# when connector is printed give back connection info
 print.RPentahoConnector <- function(x, ...) {
     cat("\n")
     print(as.data.frame(info(x)))

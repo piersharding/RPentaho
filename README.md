@@ -12,12 +12,8 @@ Welcome to the RPentaho R module.  This module is intended to facilitate CDA and
 
 
 ### Prerequisites:
- Please insure that YAML, rjson, and RUnit are installed:
-
-     install.packages(
-        c("yaml", "RUnit", "rjson"),
-            repos = c("http://piersharding.com/R")
-            )
+Please insure that YAML, RCurl, and RJSONIO are installed:
+install.packages('yaml', 'RJSONIO', 'RCurl')
 
 
 ### Installation:
@@ -25,6 +21,11 @@ Welcome to the RPentaho R module.  This module is intended to facilitate CDA and
     install.packages('RPentaho', repos=c('http://piersharding.com/R'))
 
 See the file INSTALL (https://github.com/piersharding/RPentaho/blob/master/INSTALL) for full installation instructions.
+
+OR:
+
+    require(devtools)
+    install_github('RPentaho', 'piersharding')
 
 ### Examples:
 

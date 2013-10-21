@@ -18,6 +18,11 @@ install.packages('RPentaho', repos=c('http://piersharding.com/R'))
 
 See the file INSTALL (https://github.com/piersharding/RPentaho/blob/master/INSTALL) for full installation instructions.
 
+OR:
+
+require(devtools)
+install_github('RPentaho', 'piersharding')
+
 Examples:
 See the files in the tests/ directory.
 
