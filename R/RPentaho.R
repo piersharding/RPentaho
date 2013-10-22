@@ -48,7 +48,7 @@ RPentaho <- function (...)
         for (x in names(config)) { newargs[[x]] <- as.character(config[[x]]); }
         return(RPentaho(newargs))
     }
-    # ensure we have the parameters we need 
+    # ensure we have the parameters we need
     if (!exists("pentaho", where=args) || !exists("userid", where=args) || !exists("password", where=args)) {
         stop("must call with 'pentaho', 'userid', and 'password'")
     }
@@ -114,7 +114,6 @@ call_pentaho <- function(cda_url, withFactors=FALSE,toNumeric=TRUE, toDate=TRUE)
 
             #print(paste("CDA URL: ", cda_url))
 
-            #json_data <- fromJSON(paste(readLines(URLencode(cda_url), warn=FALSE), collapse=""));
             json_data <- paste(getURLContent(URLencode(cda_url), ssl.verifypeer = FALSE), collapse="");
             if (nchar(json_data) == 0) {
                 return(data.frame())
@@ -176,7 +175,6 @@ setMethod("cdbgroups", "RPentahoConnector",
             cda_url <- paste(c(pentaho@pentaho,"/content/cdb/query?method=listGroups&userid=",
                                    pentaho@userid,"&password=",pentaho@password), collapse = "");
 
-            #json_data <- fromJSON(paste(readLines(URLencode(cda_url), warn=FALSE), collapse=""));
             json_data <- fromJSON(paste(getURLContent(URLencode(cda_url), ssl.verifypeer = FALSE), collapse=""), nullValue=NA);
             gnames <- sapply(json_data$object,function(d){d$name})
             groups <- data.frame()
@@ -184,7 +182,7 @@ setMethod("cdbgroups", "RPentahoConnector",
             for (d in gnames) {
                 cda_url <- paste(c(pentaho@pentaho,"/content/cdb/query?method=loadGroup&group=", d, "&userid=",
                                    pentaho@userid,"&password=",pentaho@password), collapse = "");
-                json_data <- fromJSON(paste(readLines(URLencode(cda_url), warn=FALSE), collapse=""), nullValue=NA);
+                json_data <- fromJSON(paste(getURLContent(URLencode(cda_url), ssl.verifypeer = FALSE), collapse=""), nullValue=NA);
                 groups <- rbind(groups,
                      data.frame(group=sapply(json_data$object, function (d) {d$group}),
                           groupName=sapply(json_data$object, function (d) {d$groupName}),
